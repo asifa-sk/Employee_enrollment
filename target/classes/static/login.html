@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Employee Enrollment</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+<div class="page">
+    <div class="panel">
+        <div class="brand">
+            <span class="dot"></span>
+            <div class="brand-text">
+                <div class="title">Employee Enrollment</div>
+                <div class="subtitle">Admin & Employee Portal</div>
+            </div>
+        </div>
+
+        <h1>Sign In</h1>
+        <p class="hint">Use your admin or employee credentials to continue.</p>
+
+        <form id="loginForm" class="form">
+            <label>
+                <span>Username</span>
+                <input type="text" id="username" placeholder="username" required>
+            </label>
+
+            <label>
+                <span>Password</span>
+                <input type="password" id="password" placeholder="••••••••" required minlength="8">
+            </label>
+
+            <button type="submit" class="primary">Login</button>
+        </form>
+
+        <div class="row">
+            <button class="link" id="forgotBtn" type="button">Forgot password?</button>
+        </div>
+
+        <div id="message" class="message"></div>
+    </div>
+</div>
+
+<div id="modal" class="modal hidden">
+    <div class="modal-card">
+        <h2>Reset Password</h2>
+        <p class="hint">Enter username or email to generate a temporary password.</p>
+        <label>
+            <span>Username or Email</span>
+            <input type="text" id="resetKey" placeholder="admin@company.com" required>
+        </label>
+        <div class="modal-actions">
+            <button class="secondary" id="cancelReset" type="button">Cancel</button>
+            <button class="primary" id="submitReset" type="button">Generate</button>
+        </div>
+        <div id="resetMessage" class="message"></div>
+    </div>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

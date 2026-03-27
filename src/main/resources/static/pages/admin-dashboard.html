@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <div>
+          <div class="title">Admin Control</div>
+          <div class="subtitle">Employee Management</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a class="btn btn-orange" href="/pages/admin-dashboard.html">Dashboard</a>
+        <a class="btn btn-orange" href="/pages/enroll-employee.html">Enroll New Employee</a>
+        <a class="btn btn-orange" href="/pages/employee-profile.html">Employee Profile</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <h1>Welcome back, Admin</h1>
+          <p>Manage your workforce, monitor activity, and streamline employee operations - all in one place.</p>
+        </div>
+        <div class="action-bar">
+          <button class="btn btn-orange" id="logoutBtn">Logout</button>
+          <span id="message" class="message"></span>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <h3>Total Workforce</h3>
+          <div class="value" id="totalEmployees">0</div>
+          <p class="muted">All employees currently enrolled in the system.</p>
+        </div>
+        <div class="card">
+          <h3>Active Members</h3>
+          <div class="value" id="activeEmployees">0</div>
+          <p class="muted">Users with active access and login permissions.</p>
+        </div>
+        <div class="card">
+          <h3>Inactive Employees</h3>
+          <div class="value" id="inactiveEmployees">0</div>
+          <p class="muted">Accounts currently disabled.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Enroll New Employee</h2>
+        <p>Fill in the details below to register a new employee into the system.</p>
+        <form id="enrollForm" class="form-grid">
+          <div class="field">
+            <label>First Name</label>
+            <input name="firstName" required />
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input name="lastName" required />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input name="email" type="email" required />
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input name="phone" required />
+          </div>
+          <div class="field">
+            <label>Department</label>
+            <input name="department" required />
+          </div>
+          <div class="field">
+            <label>Role</label>
+            <select name="role" required>
+              <option value="ADMIN">ADMIN</option>
+              <option value="EMPLOYEE" selected>EMPLOYEE</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Salary</label>
+            <input name="salary" type="number" required />
+          </div>
+          <div class="field">
+            <label>Date Of Joining</label>
+            <input name="joiningDate" type="date" required />
+          </div>
+          <div class="field">
+            <label>Address</label>
+            <textarea name="address" rows="2" required></textarea>
+          </div>
+          <div class="field">
+            <label>Username</label>
+            <input name="username" required />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input name="password" type="password" required />
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button class="btn btn-orange" type="submit">Enroll Employee</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="action-bar">
+          <h2>View Employees</h2>
+          <form id="searchForm" class="action-bar">
+            <input id="searchId" placeholder="Search Employee ID" />
+            <button class="btn btn-outline" type="submit">Search Employee</button>
+          </form>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Department</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="employeesTableBody"></tbody>
+        </table>
+      </section>
+
+      <section class="panel">
+        <h2>Employee Details</h2>
+        <div id="detailPanel" class="card"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Update Employee</h2>
+        <form id="updateForm" class="form-grid">
+          <div class="field">
+            <label>Employee ID</label>
+            <input name="id" required />
+          </div>
+          <div class="field">
+            <label>First Name</label>
+            <input name="firstName" required />
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input name="lastName" required />
+          </div>
+          <div class="field">
+            <label>Department</label>
+            <input name="department" required />
+          </div>
+          <div class="field">
+            <label>Salary</label>
+            <input name="salary" type="number" required />
+          </div>
+          <div class="field">
+            <label>Date Of Joining</label>
+            <input name="joiningDate" type="date" required />
+          </div>
+          <div class="field">
+            <label>Address</label>
+            <textarea name="address" rows="2" required></textarea>
+          </div>
+          <div class="field">
+            <label>Role</label>
+            <select name="role" required>
+              <option value="">-- Select --</option>
+              <option value="ADMIN">ADMIN</option>
+              <option value="EMPLOYEE">EMPLOYEE</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input name="phone" required />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input name="email" type="email" required />
+          </div>
+          <div class="field">
+            <label>Username</label>
+            <input name="username" required />
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button class="btn btn-orange" type="submit">Update Employee</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

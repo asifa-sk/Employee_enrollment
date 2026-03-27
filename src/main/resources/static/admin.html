@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Employee Enrollment</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="dot"></span>
+            <div>
+                <div class="title">Admin Dashboard</div>
+                <div class="subtitle">Employee Enrollment</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <button class="nav-item active">Overview</button>
+            <button class="nav-item">Employees</button>
+            <button class="nav-item">Enrollment</button>
+            <button class="nav-item">Settings</button>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <header class="topbar">
+            <div>
+                <h1>Welcome, Admin</h1>
+                <p>Track employee enrollments and system status.</p>
+            </div>
+            <button class="primary">New Enrollment</button>
+        </header>
+
+        <section class="grid">
+            <div class="card">
+                <h3>Total Employees</h3>
+                <div class="value">--</div>
+                <span class="muted">Connect to API to show live data</span>
+            </div>
+            <div class="card">
+                <h3>Active Accounts</h3>
+                <div class="value">--</div>
+                <span class="muted">Filtered by status</span>
+            </div>
+            <div class="card">
+                <h3>Pending Updates</h3>
+                <div class="value">--</div>
+                <span class="muted">Audit changes</span>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Recent Enrollments</h2>
+            <div class="empty">No records loaded yet.</div>
+        </section>
+    </main>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>

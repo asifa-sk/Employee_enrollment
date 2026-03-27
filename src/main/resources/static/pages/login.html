@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Employee System</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="login-shell">
+    <div class="login-card">
+      <h1>Employee Management System</h1>
+      <p>Secure access portal for workforce management.</p>
+      <div id="message" class="message"></div>
+      <form id="loginForm" class="field" autocomplete="off">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" required />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" required />
+        </div>
+        <button class="btn btn-primary" type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { Auth } from "../js/auth.js";
+
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+
+    const showMessage = (text, isError = false) => {
+      message.textContent = text;
+      message.classList.add("show");
+      message.style.background = isError ? "#ffe5e4" : "#eef1ff";
+      message.style.color = isError ? "#b3261e" : "#1a34ba";
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      showMessage("Signing in...");
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      try {
+        const result = await Auth.login(username, password);
+        if (result.role === "ADMIN") {
+          window.location.href = "/pages/admin-dashboard.html";
+        } else {
+          window.location.href = "/pages/employee-dashboard.html";
+        }
+      } catch (err) {
+        showMessage(err.message || "Login failed", true);
+      }
+    });
+  </script>
+</body>
+</html>

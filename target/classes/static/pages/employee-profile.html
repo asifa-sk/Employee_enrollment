@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Profile</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <div>
+          <div class="title">Employee Profile</div>
+          <div class="subtitle">Personal details</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a class="btn btn-orange" href="/pages/admin-dashboard.html">Dashboard</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <h1>Your Profile</h1>
+          <p>Details fetched from the system.</p>
+        </div>
+        <button class="btn btn-orange" id="logoutBtn">Logout</button>
+      </header>
+
+      <section class="panel">
+        <div id="profilePanel" class="card"></div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/js/employee.js"></script>
+</body>
+</html>

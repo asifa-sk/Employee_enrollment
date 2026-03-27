@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <div>
+          <div class="title">Employee Portal</div>
+          <div class="subtitle">Your account</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="active">Dashboard</button>
+        <a class="btn btn-outline" href="/pages/employee-profile.html">Profile</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <h1>Welcome Back</h1>
+          <p>Here's an overview of your profile and employment details.</p>
+        </div>
+        <button class="btn btn-orange" id="logoutBtn">Logout</button>
+      </header>
+
+      <section class="panel">
+        <div id="profilePanel" class="card"></div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/js/employee.js"></script>
+</body>
+</html>

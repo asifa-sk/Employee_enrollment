@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enroll Employee</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <div>
+          <div class="title">Admin Tools</div>
+          <div class="subtitle">Enroll New Employee</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a class="btn btn-orange" href="/pages/admin-dashboard.html">Dashboard</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <h1>Enroll New Employee</h1>
+          <p>Admin-only enrollment.</p>
+        </div>
+        <span id="message" class="message"></span>
+      </header>
+
+      <section class="panel">
+        <form id="enrollForm" class="form-grid">
+          <div class="field">
+            <label>First Name</label>
+            <input name="firstName" placeholder="Enter first name" required />
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input name="lastName" placeholder="Enter last name" required />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input name="email" type="email" placeholder="example@company.com" required />
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input name="phone" placeholder="Enter contact number" required />
+          </div>
+          <div class="field">
+            <label>Department</label>
+            <input name="department" placeholder="e.g. IT, HR, Finance" required />
+          </div>
+          <div class="field">
+            <label>Role</label>
+            <select name="role" required>
+              <option value="ADMIN">ADMIN</option>
+              <option value="EMPLOYEE" selected>EMPLOYEE</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Salary</label>
+            <input name="salary" type="number" placeholder="Enter monthly salary" required />
+          </div>
+          <div class="field">
+            <label>Date Of Joining</label>
+            <input name="joiningDate" type="date" required />
+          </div>
+          <div class="field">
+            <label>Address</label>
+            <textarea name="address" rows="2" required></textarea>
+          </div>
+          <div class="field">
+            <label>Username</label>
+            <input name="username" placeholder="Choose a unique username" required />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input name="password" type="password" placeholder="Create a secure password" required />
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button class="btn btn-orange" type="submit">Save Changes</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>
