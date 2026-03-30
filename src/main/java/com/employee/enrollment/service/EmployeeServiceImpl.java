@@ -5,6 +5,7 @@ import com.employee.enrollment.dto.EmployeeResponse;
 import com.employee.enrollment.dto.EmployeeUpdateRequest;
 import com.employee.enrollment.entity.Employee;
 import com.employee.enrollment.entity.EmployeeStatus;
+import com.employee.enrollment.exception.BadRequestException;
 import com.employee.enrollment.exception.DuplicateResourceException;
 import com.employee.enrollment.exception.ResourceNotFoundException;
 import com.employee.enrollment.repository.EmployeeRepository;
@@ -52,6 +53,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee saved = employeeRepository.save(employee);
         return toResponse(saved);
+    }
+
+    @Override
+    public EmployeeResponse bootstrapAdmin(EmployeeEnrollRequest request) {
+        if (employeeRepository.count() > 0) {
+            throw new BadRequestException("Initial admin is already configured");
+        }
+
+        request.setRole("ADMIN");
+        return enroll(request);
     }
 
     @Override

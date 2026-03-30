@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 "/login.css",
                                 "/login.js"
                         ).permitAll()
-                        .requestMatchers("/auth/login", "/auth/forgot-password").permitAll()
+                            .requestMatchers("/auth/login", "/auth/forgot-password", "/employees/bootstrap-admin").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

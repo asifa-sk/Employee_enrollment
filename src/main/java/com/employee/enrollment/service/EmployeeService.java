@@ -10,6 +10,8 @@ import java.util.List;
 public interface EmployeeService {
     EmployeeResponse enroll(EmployeeEnrollRequest request);
 
+    EmployeeResponse bootstrapAdmin(EmployeeEnrollRequest request);
+
     List<EmployeeResponse> getAll();
 
     EmployeeResponse getById(Long id);

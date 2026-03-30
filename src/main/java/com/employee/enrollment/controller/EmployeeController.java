@@ -25,6 +25,14 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @PostMapping("/bootstrap-admin")
+    public ResponseEntity<ApiResponse<EmployeeResponse>> bootstrapAdmin(@Valid @RequestBody EmployeeEnrollRequest request) {
+        EmployeeResponse response = employeeService.bootstrapAdmin(request);
+        ApiResponse<EmployeeResponse> body =
+                ApiResponse.of(HttpStatus.CREATED.value(), "Initial admin created successfully", response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
+    }
+
     @PostMapping("/enroll")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<EmployeeResponse>> enroll(@Valid @RequestBody EmployeeEnrollRequest request) {

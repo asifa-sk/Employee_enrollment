@@ -1,6 +1,10 @@
 ﻿import { Api, pickData } from "./api.js";
 import { Auth } from "./auth.js";
 
+const isBootstrapEnrollPage = window.location.pathname.endsWith("/pages/enroll-employee.html");
+const hasAuthToken = Boolean(localStorage.getItem("auth_token"));
+const bootstrapMode = isBootstrapEnrollPage && !hasAuthToken;
+
 const ui = {
   message: document.getElementById("message"),
   enrollForm: document.getElementById("enrollForm"),
@@ -118,12 +122,18 @@ const handleEnroll = async (event) => {
   payload.status = "ACTIVE";
 
   try {
-    await Api.request("/employees/enroll", {
+    const endpoint = bootstrapMode ? "/employees/bootstrap-admin" : "/employees/enroll";
+    await Api.request(endpoint, {
       method: "POST",
-      body: payload
+      body: payload,
+      auth: !bootstrapMode
     });
-    showMessage("Employee enrolled successfully.");
+    showMessage(bootstrapMode ? "Initial admin created successfully. Please log in." : "Employee enrolled successfully.");
     ui.enrollForm.reset();
+    if (bootstrapMode) {
+      window.location.href = "/pages/login.html";
+      return;
+    }
     await loadEmployees();
   } catch (err) {
     showMessage(err.message || "Enrollment failed", true);
@@ -237,8 +247,14 @@ const bindEvents = () => {
 };
 
 const init = async () => {
-  if (!Auth.guard("ADMIN")) return;
   bindEvents();
+
+  if (bootstrapMode) {
+    renderDetail(null);
+    return;
+  }
+
+  if (!Auth.guard("ADMIN")) return;
   renderDetail(null);
   await loadEmployees();
 };
