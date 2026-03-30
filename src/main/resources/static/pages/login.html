@@ -44,8 +44,6 @@
         <button class="btn btn-warm" type="submit">Login</button>
       </form>
 
-      <a class="create-admin-link" id="forgotPasswordBtn" href="#">Forgot password?</a>
-
       <div class="auth-divider"><span>or</span></div>
       <a class="create-admin-link" href="/pages/enroll-employee.html">Set Up First Admin</a>
     </section>
@@ -56,7 +54,6 @@
 
     const form = document.getElementById("loginForm");
     const message = document.getElementById("message");
-    const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 
     const showMessage = (text, isError = false) => {
       message.textContent = text;
@@ -81,38 +78,6 @@
         }
       } catch (err) {
         showMessage(err.message || "Login failed", true);
-      }
-    });
-
-    forgotPasswordBtn.addEventListener("click", async (event) => {
-      event.preventDefault();
-      const usernameOrEmail = prompt("Enter your username or email");
-      if (!usernameOrEmail || !usernameOrEmail.trim()) {
-        return;
-      }
-
-      showMessage("Generating temporary password...");
-
-      try {
-        const response = await fetch("/auth/forgot-password", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ usernameOrEmail: usernameOrEmail.trim() })
-        });
-
-        const payload = await response.json();
-        if (!response.ok) {
-          throw new Error(payload?.message || "Unable to reset password");
-        }
-
-        const tempPassword = payload?.data?.temporaryPassword || payload?.temporaryPassword;
-        if (!tempPassword) {
-          throw new Error("Temporary password not received");
-        }
-
-        showMessage(`Temporary password: ${tempPassword}. Use this to login now.`);
-      } catch (err) {
-        showMessage(err.message || "Unable to reset password", true);
       }
     });
   </script>
