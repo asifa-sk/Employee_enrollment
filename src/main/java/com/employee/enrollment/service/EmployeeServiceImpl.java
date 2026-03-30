@@ -57,8 +57,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse bootstrapAdmin(EmployeeEnrollRequest request) {
-        if (employeeRepository.count() > 0) {
-            throw new BadRequestException("Initial admin is already configured");
+        if (employeeRepository.existsByRoleIgnoreCaseAndStatus("ADMIN", EmployeeStatus.ACTIVE)) {
+            throw new BadRequestException("An active admin is already configured");
         }
 
         request.setRole("ADMIN");
