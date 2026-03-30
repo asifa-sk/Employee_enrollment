@@ -3,27 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login | Employee System</title>
+  <title>Sign In | Employee Managment System</title>
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
-<body>
-  <div class="login-shell">
-    <div class="login-card">
-      <h1>Employee Management System</h1>
-      <p>Secure access portal for workforce management.</p>
+<body class="login-page">
+  <div class="portal-shell">
+    <section class="portal-panel portal-story">
+      <p class="eyebrow">Employee Managment System</p>
+      <h1>Employee management system for secure and organized workforce operations.</h1>
+      <p class="lead">Use a single portal to onboard staff, maintain records, and keep employee information accurate across teams.</p>
+
+      <div class="story-grid">
+        <article>
+          <h3>Admin Access</h3>
+          <p>Admins can enroll new employees, manage records, assign roles, and monitor account status across departments.</p>
+        </article>
+        <article>
+          <h3>Employee Access</h3>
+          <p>Employees can sign in to view profile details and keep their records up to date.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="portal-panel portal-auth">
+      <p class="eyebrow">Secure Entry</p>
+      <h2>Login</h2>
+      <p class="muted">Sign in with your username or email and password to open your workspace.</p>
+
       <div id="message" class="message"></div>
-      <form id="loginForm" class="field" autocomplete="off">
+
+      <form id="loginForm" class="auth-form" autocomplete="off">
         <div class="field">
-          <label for="username">Username</label>
+          <label for="username">Username or Email</label>
           <input id="username" name="username" type="text" required />
         </div>
         <div class="field">
           <label for="password">Password</label>
           <input id="password" name="password" type="password" required />
         </div>
-        <button class="btn btn-primary" type="submit">Login</button>
+        <button class="btn btn-warm" type="submit">Login</button>
       </form>
-    </div>
+
+      <div class="auth-divider"><span>or</span></div>
+      <a class="create-admin-link" href="/pages/enroll-employee.html">Set Up First Admin</a>
+    </section>
   </div>
 
   <script type="module">
