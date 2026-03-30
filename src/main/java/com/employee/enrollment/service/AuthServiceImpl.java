@@ -40,17 +40,19 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
+        String usernameOrEmail = request.getUsername().trim();
+        Employee employee = employeeRepository.findByUsername(usernameOrEmail)
+                .or(() -> employeeRepository.findByEmail(usernameOrEmail))
+                .orElseThrow(() -> new BadRequestException("Invalid username or password"));
+
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+                    new UsernamePasswordAuthenticationToken(employee.getUsername(), request.getPassword()));
         } catch (DisabledException ex) {
             throw new BadRequestException("Account is inactive");
         } catch (AuthenticationException ex) {
             throw new BadRequestException("Invalid username or password");
         }
-
-        Employee employee = employeeRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new BadRequestException("User not found"));
 
         String token = jwtService.generateToken(new com.employee.enrollment.security.CustomUserDetails(employee));
 
