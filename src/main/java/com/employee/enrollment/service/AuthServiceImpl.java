@@ -1,5 +1,6 @@
 package com.employee.enrollment.service;
 
+import com.employee.enrollment.dto.ChangePasswordRequest;
 import com.employee.enrollment.dto.ForgotPasswordRequest;
 import com.employee.enrollment.dto.ForgotPasswordResponse;
 import com.employee.enrollment.dto.LoginRequest;
@@ -77,6 +78,23 @@ public class AuthServiceImpl implements AuthService {
         employeeRepository.save(employee);
 
         return new ForgotPasswordResponse(tempPassword);
+    }
+
+    @Override
+    public void changePassword(String username, ChangePasswordRequest request) {
+        Employee employee = employeeRepository.findByUsername(username)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), employee.getPassword())) {
+            throw new BadRequestException("Current password is incorrect");
+        }
+
+        if (request.getCurrentPassword().equals(request.getNewPassword())) {
+            throw new BadRequestException("New password must be different from current password");
+        }
+
+        employee.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        employeeRepository.save(employee);
     }
 
     private String generateTempPassword(int length) {
