@@ -5,8 +5,16 @@
   "outputDirectory": "src/main/resources/static",
   "rewrites": [
     {
+      "source": "/auth",
+      "destination": "https://employeeenrollment-production.up.railway.app/auth"
+    },
+    {
       "source": "/auth/:path*",
       "destination": "https://employeeenrollment-production.up.railway.app/auth/:path*"
+    },
+    {
+      "source": "/employees",
+      "destination": "https://employeeenrollment-production.up.railway.app/employees"
     },
     {
       "source": "/employees/:path*",
