@@ -97,11 +97,15 @@ const refreshSummary = () => {
 const loadEmployees = async () => {
   try {
     const payload = await Api.request("/employees");
+    console.log("Raw payload from /employees:", payload);
     const data = pickData(payload) || [];
+    console.log("Data after pickData:", data);
     state.employees = Array.isArray(data) ? data : [];
+    console.log("Final employees array:", state.employees);
     renderEmployees(state.employees);
     refreshSummary();
   } catch (err) {
+    console.error("Error loading employees:", err);
     showMessage(err.message || "Unable to load employees", true);
   }
 };
