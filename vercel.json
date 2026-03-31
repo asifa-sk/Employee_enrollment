@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": "src/main/resources/static",
+  "rewrites": [
+    {
+      "source": "/auth/:path*",
+      "destination": "https://employeeenrollment-production.up.railway.app/auth/:path*"
+    },
+    {
+      "source": "/employees/:path*",
+      "destination": "https://employeeenrollment-production.up.railway.app/employees/:path*"
+    }
+  ]
+}
