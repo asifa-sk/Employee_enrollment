@@ -519,6 +519,25 @@ textarea {
   margin-bottom: 12px;
 }
 
+.forgot-wrap {
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+.link-button {
+  background: transparent;
+  border: none;
+  color: #9a4a21;
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.forgot-form {
+  margin-top: 10px;
+}
+
 .auth-divider {
   margin: 16px 0 8px;
   text-align: center;

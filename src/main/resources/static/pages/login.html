@@ -44,15 +44,30 @@
         <button class="btn btn-warm" type="submit">Login</button>
       </form>
 
+      <div class="forgot-wrap">
+        <button id="forgotToggleBtn" class="link-button" type="button">Forgot password?</button>
+      </div>
+
+      <form id="forgotForm" class="auth-form forgot-form" autocomplete="off" hidden>
+        <div class="field">
+          <label for="usernameOrEmail">Username or Email</label>
+          <input id="usernameOrEmail" name="usernameOrEmail" type="text" required />
+        </div>
+        <button class="btn btn-outline" type="submit">Generate Temporary Password</button>
+      </form>
+
       <div class="auth-divider"><span>or</span></div>
       <a class="create-admin-link" href="/pages/enroll-employee.html">Set Up First Admin</a>
     </section>
   </div>
 
   <script type="module">
+    import { Api } from "../js/api.js";
     import { Auth } from "../js/auth.js";
 
     const form = document.getElementById("loginForm");
+    const forgotForm = document.getElementById("forgotForm");
+    const forgotToggleBtn = document.getElementById("forgotToggleBtn");
     const message = document.getElementById("message");
 
     const showMessage = (text, isError = false) => {
@@ -78,6 +93,34 @@
         }
       } catch (err) {
         showMessage(err.message || "Login failed", true);
+      }
+    });
+
+    forgotToggleBtn.addEventListener("click", () => {
+      forgotForm.hidden = !forgotForm.hidden;
+      if (!forgotForm.hidden) {
+        document.getElementById("usernameOrEmail").focus();
+      }
+    });
+
+    forgotForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const usernameOrEmail = document.getElementById("usernameOrEmail").value.trim();
+      if (!usernameOrEmail) {
+        showMessage("Enter username or email.", true);
+        return;
+      }
+
+      try {
+        const payload = await Api.request("/auth/forgot-password", {
+          method: "POST",
+          body: { usernameOrEmail },
+          auth: false
+        });
+        const temp = payload?.data?.temporaryPassword || "(not received)";
+        showMessage(`Temporary password: ${temp}`);
+      } catch (err) {
+        showMessage(err.message || "Unable to generate temporary password", true);
       }
     });
   </script>
