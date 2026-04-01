@@ -94,6 +94,31 @@ input:focus {
     box-shadow: 0 0 0 3px rgba(26, 61, 143, 0.15);
 }
 
+.password-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.password-row input {
+    flex: 1;
+}
+
+.password-toggle {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #d4dae7;
+    background: #ffffff;
+    color: #2c3140;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.password-toggle:hover {
+    background: #f4f6fb;
+}
+
 .primary,
 .secondary,
 .link {

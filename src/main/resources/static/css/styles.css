@@ -251,6 +251,31 @@ textarea {
   background: white;
 }
 
+.password-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.password-row input {
+  flex: 1;
+}
+
+.password-toggle {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  background: var(--surface-alt);
+}
+
 .message {
   padding: 12px 14px;
   border-radius: 12px;

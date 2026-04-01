@@ -28,7 +28,10 @@
 
             <label>
                 <span>Password</span>
-                <input type="password" id="password" placeholder="••••••••" required minlength="8">
+                <div class="password-row">
+                    <input type="password" id="password" placeholder="••••••••" required minlength="8">
+                    <button type="button" id="togglePasswordBtn" class="password-toggle" aria-label="Show password">Show</button>
+                </div>
             </label>
 
             <button type="submit" class="primary">Login</button>
