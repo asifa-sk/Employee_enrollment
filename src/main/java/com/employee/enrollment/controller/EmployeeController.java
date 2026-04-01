@@ -6,11 +6,14 @@ import com.employee.enrollment.dto.EmployeeResponse;
 import com.employee.enrollment.dto.EmployeeUpdateRequest;
 import com.employee.enrollment.dto.StatusUpdateRequest;
 import com.employee.enrollment.entity.EmployeeStatus;
+import com.employee.enrollment.exception.BadRequestException;
+import com.employee.enrollment.security.CustomUserDetails;
 import com.employee.enrollment.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -78,6 +81,18 @@ public class EmployeeController {
         EmployeeResponse response = employeeService.updateStatus(id, status);
         ApiResponse<EmployeeResponse> body =
                 ApiResponse.of(HttpStatus.OK.value(), "Employee status updated successfully", response);
+        return ResponseEntity.ok(body);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id,
+                                                    @AuthenticationPrincipal CustomUserDetails principal) {
+        if (principal != null && id.equals(principal.getId())) {
+            throw new BadRequestException("You cannot delete your own admin account");
+        }
+        employeeService.delete(id);
+        ApiResponse<Void> body = ApiResponse.of(HttpStatus.OK.value(), "Employee deleted successfully", null);
         return ResponseEntity.ok(body);
     }
 }

@@ -23,6 +23,8 @@ const state = {
   employees: []
 };
 
+const currentUserId = String(localStorage.getItem("auth_employee_id") || "").trim();
+
 const showMessage = (text, isError = false) => {
   if (!ui.message) return;
   ui.message.textContent = text;
@@ -45,6 +47,7 @@ const renderEmployees = (employees) => {
   employees.forEach((emp) => {
     const row = document.createElement("tr");
     const status = formatStatus(emp.status);
+    const isSelf = currentUserId && String(emp.id) === currentUserId;
 
     row.innerHTML = `
       <td>${emp.id ?? "-"}</td>
@@ -58,6 +61,7 @@ const renderEmployees = (employees) => {
         <button class="btn ${status === "ACTIVE" ? "btn-danger" : "btn-primary"}" data-action="toggle" data-id="${emp.id}" data-status="${status}">
           ${status === "ACTIVE" ? "Disable" : "Activate"}
         </button>
+        <button class="btn btn-danger" data-action="delete" data-id="${emp.id}" ${isSelf ? "disabled title=\"You cannot delete your own account\"" : ""}>Delete</button>
       </td>
     `;
     ui.employeesTable.appendChild(row);
@@ -237,6 +241,29 @@ const handleTableClick = async (event) => {
       await loadEmployees();
     } catch (err) {
       showMessage(err.message || "Status update failed", true);
+    }
+  }
+
+  if (action === "delete") {
+    if (currentUserId && String(id) === currentUserId) {
+      showMessage("You cannot delete your own admin account.", true);
+      return;
+    }
+
+    const employee = state.employees.find((emp) => String(emp.id) === String(id));
+    const name = employee ? `${employee.firstName ?? ""} ${employee.lastName ?? ""}`.trim() : `ID ${id}`;
+    const confirmed = window.confirm(`Delete employee ${name}? This cannot be undone.`);
+    if (!confirmed) return;
+
+    try {
+      await Api.request(`/employees/${id}`, {
+        method: "DELETE"
+      });
+      showMessage("Employee deleted successfully.");
+      renderDetail(null);
+      await loadEmployees();
+    } catch (err) {
+      showMessage(err.message || "Delete failed", true);
     }
   }
 };

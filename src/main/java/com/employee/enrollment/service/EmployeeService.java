@@ -19,4 +19,6 @@ public interface EmployeeService {
     EmployeeResponse update(Long id, EmployeeUpdateRequest request);
 
     EmployeeResponse updateStatus(Long id, EmployeeStatus status);
+
+    void delete(Long id);
 }

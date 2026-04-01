@@ -123,6 +123,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         return toResponse(saved);
     }
 
+    @Override
+    public void delete(Long id) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+        employeeRepository.delete(employee);
+    }
+
     private EmployeeResponse toResponse(Employee employee) {
         EmployeeResponse response = new EmployeeResponse();
         response.setId(employee.getId());
