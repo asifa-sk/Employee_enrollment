@@ -23,8 +23,6 @@ const state = {
   employees: []
 };
 
-const currentUserId = String(localStorage.getItem("auth_employee_id") || "").trim();
-
 const showMessage = (text, isError = false) => {
   if (!ui.message) return;
   ui.message.textContent = text;
@@ -47,7 +45,6 @@ const renderEmployees = (employees) => {
   employees.forEach((emp) => {
     const row = document.createElement("tr");
     const status = formatStatus(emp.status);
-    const isSelf = currentUserId && String(emp.id) === currentUserId;
 
     row.innerHTML = `
       <td>${emp.id ?? "-"}</td>
@@ -98,12 +95,17 @@ const refreshSummary = () => {
   if (ui.totals.inactive) ui.totals.inactive.textContent = inactive;
 };
 
+const scrollToSection = (element) => {
+  const panel = element?.closest(".panel");
+  if (!panel) return;
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 const loadEmployees = async () => {
-  try {
+        <button class="btn btn-outline" data-action="edit" data-id="${emp.id}">Update</button>
     const payload = await Api.request("/employees");
     console.log("Raw payload from /employees:", payload);
     const data = pickData(payload) || [];
-    console.log("Data after pickData:", data);
     state.employees = Array.isArray(data) ? data : [];
     console.log("Final employees array:", state.employees);
     renderEmployees(state.employees);
@@ -214,6 +216,7 @@ const handleTableClick = async (event) => {
       const payload = await Api.request(`/employees/${id}`);
       const employee = pickData(payload) || payload;
       renderDetail(employee);
+      scrollToSection(ui.detailPanel);
     } catch (err) {
       showMessage(err.message || "Unable to load details", true);
     }
@@ -226,7 +229,8 @@ const handleTableClick = async (event) => {
       const input = ui.updateForm.querySelector(`[name="${key}"]`);
       if (input) input.value = value ?? "";
     });
-    showMessage("Edit the fields and click Update Employee.");
+    showMessage("Update the fields and click Update Employee.");
+    scrollToSection(ui.updateForm);
   }
 
   if (action === "toggle") {
@@ -241,29 +245,6 @@ const handleTableClick = async (event) => {
       await loadEmployees();
     } catch (err) {
       showMessage(err.message || "Status update failed", true);
-    }
-  }
-
-  if (action === "delete") {
-    if (currentUserId && String(id) === currentUserId) {
-      showMessage("You cannot delete your own admin account.", true);
-      return;
-    }
-
-    const employee = state.employees.find((emp) => String(emp.id) === String(id));
-    const name = employee ? `${employee.firstName ?? ""} ${employee.lastName ?? ""}`.trim() : `ID ${id}`;
-    const confirmed = window.confirm(`Delete employee ${name}? This cannot be undone.`);
-    if (!confirmed) return;
-
-    try {
-      await Api.request(`/employees/${id}`, {
-        method: "DELETE"
-      });
-      showMessage("Employee deleted successfully.");
-      renderDetail(null);
-      await loadEmployees();
-    } catch (err) {
-      showMessage(err.message || "Delete failed", true);
     }
   }
 };
