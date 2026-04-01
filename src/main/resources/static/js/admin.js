@@ -38,6 +38,12 @@ const clearMessage = () => {
 
 const formatStatus = (status) => (status || "").toUpperCase() === "ACTIVE" ? "ACTIVE" : "INACTIVE";
 
+const scrollToSection = (element) => {
+  const panel = element?.closest(".panel");
+  if (!panel) return;
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 const renderEmployees = (employees) => {
   if (!ui.employeesTable) return;
   ui.employeesTable.innerHTML = "";
@@ -54,11 +60,10 @@ const renderEmployees = (employees) => {
       <td><span class="badge ${status === "ACTIVE" ? "active" : "inactive"}">${status}</span></td>
       <td>
         <button class="btn btn-outline" data-action="view" data-id="${emp.id}">View</button>
-        <button class="btn btn-outline" data-action="edit" data-id="${emp.id}">Edit</button>
+        <button class="btn btn-outline" data-action="edit" data-id="${emp.id}">Update</button>
         <button class="btn ${status === "ACTIVE" ? "btn-danger" : "btn-primary"}" data-action="toggle" data-id="${emp.id}" data-status="${status}">
           ${status === "ACTIVE" ? "Disable" : "Activate"}
         </button>
-        <button class="btn btn-danger" data-action="delete" data-id="${emp.id}" ${isSelf ? "disabled title=\"You cannot delete your own account\"" : ""}>Delete</button>
       </td>
     `;
     ui.employeesTable.appendChild(row);
@@ -95,23 +100,14 @@ const refreshSummary = () => {
   if (ui.totals.inactive) ui.totals.inactive.textContent = inactive;
 };
 
-const scrollToSection = (element) => {
-  const panel = element?.closest(".panel");
-  if (!panel) return;
-  panel.scrollIntoView({ behavior: "smooth", block: "start" });
-};
-
 const loadEmployees = async () => {
-        <button class="btn btn-outline" data-action="edit" data-id="${emp.id}">Update</button>
+  try {
     const payload = await Api.request("/employees");
-    console.log("Raw payload from /employees:", payload);
     const data = pickData(payload) || [];
     state.employees = Array.isArray(data) ? data : [];
-    console.log("Final employees array:", state.employees);
     renderEmployees(state.employees);
     refreshSummary();
   } catch (err) {
-    console.error("Error loading employees:", err);
     showMessage(err.message || "Unable to load employees", true);
   }
 };
