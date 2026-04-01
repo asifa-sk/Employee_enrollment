@@ -1,21 +1,10 @@
 ﻿const loginForm = document.getElementById("loginForm");
 const message = document.getElementById("message");
-const passwordInput = document.getElementById("password");
-const togglePasswordBtn = document.getElementById("togglePasswordBtn");
 const forgotBtn = document.getElementById("forgotBtn");
 const modal = document.getElementById("modal");
 const cancelReset = document.getElementById("cancelReset");
 const submitReset = document.getElementById("submitReset");
 const resetMessage = document.getElementById("resetMessage");
-
-if (togglePasswordBtn && passwordInput) {
-    togglePasswordBtn.addEventListener("click", () => {
-        const isHidden = passwordInput.type === "password";
-        passwordInput.type = isHidden ? "text" : "password";
-        togglePasswordBtn.textContent = isHidden ? "Hide" : "Show";
-        togglePasswordBtn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
-    });
-}
 
 function showMessage(target, text, isError = false) {
     target.textContent = text;
