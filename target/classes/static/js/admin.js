@@ -1,6 +1,10 @@
 ﻿import { Api, pickData } from "./api.js";
 import { Auth } from "./auth.js";
 
+const isBootstrapEnrollPage = window.location.pathname.endsWith("/pages/enroll-employee.html");
+const hasAuthToken = Boolean(localStorage.getItem("auth_token"));
+const bootstrapMode = isBootstrapEnrollPage && !hasAuthToken;
+
 const ui = {
   message: document.getElementById("message"),
   enrollForm: document.getElementById("enrollForm"),
@@ -34,6 +38,12 @@ const clearMessage = () => {
 
 const formatStatus = (status) => (status || "").toUpperCase() === "ACTIVE" ? "ACTIVE" : "INACTIVE";
 
+const scrollToSection = (element) => {
+  const panel = element?.closest(".panel");
+  if (!panel) return;
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 const renderEmployees = (employees) => {
   if (!ui.employeesTable) return;
   ui.employeesTable.innerHTML = "";
@@ -50,7 +60,7 @@ const renderEmployees = (employees) => {
       <td><span class="badge ${status === "ACTIVE" ? "active" : "inactive"}">${status}</span></td>
       <td>
         <button class="btn btn-outline" data-action="view" data-id="${emp.id}">View</button>
-        <button class="btn btn-outline" data-action="edit" data-id="${emp.id}">Edit</button>
+        <button class="btn btn-outline" data-action="edit" data-id="${emp.id}">Update</button>
         <button class="btn ${status === "ACTIVE" ? "btn-danger" : "btn-primary"}" data-action="toggle" data-id="${emp.id}" data-status="${status}">
           ${status === "ACTIVE" ? "Disable" : "Activate"}
         </button>
@@ -118,12 +128,18 @@ const handleEnroll = async (event) => {
   payload.status = "ACTIVE";
 
   try {
-    await Api.request("/employees/enroll", {
+    const endpoint = bootstrapMode ? "/employees/bootstrap-admin" : "/employees/enroll";
+    await Api.request(endpoint, {
       method: "POST",
-      body: payload
+      body: payload,
+      auth: !bootstrapMode
     });
-    showMessage("Employee enrolled successfully.");
+    showMessage(bootstrapMode ? "Initial admin created successfully. Please log in." : "Employee enrolled successfully.");
     ui.enrollForm.reset();
+    if (bootstrapMode) {
+      window.location.href = "/pages/login.html";
+      return;
+    }
     await loadEmployees();
   } catch (err) {
     showMessage(err.message || "Enrollment failed", true);
@@ -196,6 +212,7 @@ const handleTableClick = async (event) => {
       const payload = await Api.request(`/employees/${id}`);
       const employee = pickData(payload) || payload;
       renderDetail(employee);
+      scrollToSection(ui.detailPanel);
     } catch (err) {
       showMessage(err.message || "Unable to load details", true);
     }
@@ -208,7 +225,8 @@ const handleTableClick = async (event) => {
       const input = ui.updateForm.querySelector(`[name="${key}"]`);
       if (input) input.value = value ?? "";
     });
-    showMessage("Edit the fields and click Update Employee.");
+    showMessage("Update the fields and click Update Employee.");
+    scrollToSection(ui.updateForm);
   }
 
   if (action === "toggle") {
@@ -237,8 +255,14 @@ const bindEvents = () => {
 };
 
 const init = async () => {
-  if (!Auth.guard("ADMIN")) return;
   bindEvents();
+
+  if (bootstrapMode) {
+    renderDetail(null);
+    return;
+  }
+
+  if (!Auth.guard("ADMIN")) return;
   renderDetail(null);
   await loadEmployees();
 };

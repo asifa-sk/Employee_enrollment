@@ -3,34 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login | Employee System</title>
+  <title>Sign In | Employee Managment System</title>
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
-<body>
-  <div class="login-shell">
-    <div class="login-card">
-      <h1>Employee Management System</h1>
-      <p>Secure access portal for workforce management.</p>
+<body class="login-page">
+  <div class="portal-shell">
+    <section class="portal-panel portal-story">
+      <p class="eyebrow">Employee Managment System</p>
+      <h1>Employee management system for secure and organized workforce operations.</h1>
+      <p class="lead">Use a single portal to onboard staff, maintain records, and keep employee information accurate across teams.</p>
+
+      <div class="story-grid">
+        <article>
+          <h3>Admin Access</h3>
+          <p>Admins can enroll new employees, manage records, assign roles, and monitor account status across departments.</p>
+        </article>
+        <article>
+          <h3>Employee Access</h3>
+          <p>Employees can sign in to view profile details and keep their records up to date.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="portal-panel portal-auth">
+      <p class="eyebrow">Secure Entry</p>
+      <h2>Login</h2>
+      <p class="muted">Sign in with your username or email and password to open your workspace.</p>
+
       <div id="message" class="message"></div>
-      <form id="loginForm" class="field" autocomplete="off">
+
+      <form id="loginForm" class="auth-form" autocomplete="off">
         <div class="field">
-          <label for="username">Username</label>
+          <label for="username">Username or Email</label>
           <input id="username" name="username" type="text" required />
         </div>
         <div class="field">
           <label for="password">Password</label>
-          <input id="password" name="password" type="password" required />
+          <div class="password-row">
+            <input id="password" name="password" type="password" required />
+            <button id="togglePasswordBtn" class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" title="Show password">
+              <svg class="password-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12 18 18.75 12 18.75 2.25 12 2.25 12Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                <circle cx="12" cy="12" r="3.25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </button>
+          </div>
         </div>
-        <button class="btn btn-primary" type="submit">Login</button>
+        <button class="btn btn-warm" type="submit">Login</button>
       </form>
-    </div>
+
+      <div class="forgot-wrap">
+        <button id="forgotToggleBtn" class="link-button" type="button">Forgot password?</button>
+      </div>
+
+      <form id="forgotForm" class="auth-form forgot-form" autocomplete="off" hidden>
+        <div class="field">
+          <label for="usernameOrEmail">Username or Email</label>
+          <input id="usernameOrEmail" name="usernameOrEmail" type="text" required />
+        </div>
+        <button class="btn btn-outline" type="submit">Generate Temporary Password</button>
+      </form>
+
+      <div class="auth-divider"><span>or</span></div>
+      <a class="create-admin-link" href="/pages/enroll-employee.html">Set Up First Admin</a>
+    </section>
   </div>
 
   <script type="module">
+    import { Api } from "../js/api.js";
     import { Auth } from "../js/auth.js";
 
     const form = document.getElementById("loginForm");
+    const forgotForm = document.getElementById("forgotForm");
+    const forgotToggleBtn = document.getElementById("forgotToggleBtn");
     const message = document.getElementById("message");
+    const passwordInput = document.getElementById("password");
+    const togglePasswordBtn = document.getElementById("togglePasswordBtn");
 
     const showMessage = (text, isError = false) => {
       message.textContent = text;
@@ -38,6 +86,16 @@
       message.style.background = isError ? "#ffe5e4" : "#eef1ff";
       message.style.color = isError ? "#b3261e" : "#1a34ba";
     };
+
+    if (togglePasswordBtn && passwordInput) {
+      togglePasswordBtn.addEventListener("click", () => {
+        const isHidden = passwordInput.type === "password";
+        passwordInput.type = isHidden ? "text" : "password";
+        togglePasswordBtn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+        togglePasswordBtn.setAttribute("title", isHidden ? "Hide password" : "Show password");
+        togglePasswordBtn.setAttribute("aria-pressed", isHidden ? "true" : "false");
+      });
+    }
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -55,6 +113,34 @@
         }
       } catch (err) {
         showMessage(err.message || "Login failed", true);
+      }
+    });
+
+    forgotToggleBtn.addEventListener("click", () => {
+      forgotForm.hidden = !forgotForm.hidden;
+      if (!forgotForm.hidden) {
+        document.getElementById("usernameOrEmail").focus();
+      }
+    });
+
+    forgotForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const usernameOrEmail = document.getElementById("usernameOrEmail").value.trim();
+      if (!usernameOrEmail) {
+        showMessage("Enter username or email.", true);
+        return;
+      }
+
+      try {
+        const payload = await Api.request("/auth/forgot-password", {
+          method: "POST",
+          body: { usernameOrEmail },
+          auth: false
+        });
+        const temp = payload?.data?.temporaryPassword || "(not received)";
+        showMessage(`Temporary password: ${temp}`);
+      } catch (err) {
+        showMessage(err.message || "Unable to generate temporary password", true);
       }
     });
   </script>

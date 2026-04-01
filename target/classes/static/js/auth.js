@@ -33,6 +33,9 @@ export const Auth = {
     localStorage.removeItem("auth_employee_id");
     window.location.href = "/pages/login.html";
   },
+  token() {
+    return localStorage.getItem("auth_token") || "";
+  },
   role() {
     return (localStorage.getItem("auth_role") || "").toUpperCase();
   },
@@ -41,6 +44,11 @@ export const Auth = {
   },
   guard(expectedRole) {
     const role = Auth.role();
+    const token = Auth.token();
+    if (!role || !token) {
+      Auth.logout();
+      return false;
+    }
     if (!role) {
       window.location.href = "/pages/login.html";
       return false;

@@ -30,32 +30,5 @@ CREATE INDEX idx_employee_username ON employee(username);
 CREATE INDEX idx_employee_department ON employee(department);
 CREATE INDEX idx_employee_status ON employee(status);
 
-INSERT INTO employee (
-    first_name,
-    last_name,
-    email,
-    phone,
-    department,
-    role,
-    salary,
-    joining_date,
-    address,
-    username,
-    password,
-    status
-) VALUES (
-    'Admin',
-    'User',
-    'admin@company.com',
-    '1234567890',
-    'IT',
-    'Admin',
-    100000.00,
-    CURDATE(),
-    'Company Address',
-    'admin',
-    '$2a$10$li.SOjhB//DzrMP73sGMAeZZRUGa6aiMgwfFxFLm.KYbnIOjILkEO',
-    'Active'
-);
 
 DESCRIBE employee;
